@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useRef, useCallback } from 'react'
+import { useState, useEffect, useRef, useCallback, useSyncExternalStore } from 'react'
 import { io, Socket } from 'socket.io-client'
 import { Send, LogOut, ArrowDown, Loader2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
@@ -44,9 +44,11 @@ function LoginPage({ onLogin }: { onLogin: (user: User) => void }) {
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
   const [isLoading, setIsLoading] = useState(false)
-  const [loveQuote] = useState(() =>
-    LOVE_MESSAGES[Math.floor(Math.random() * LOVE_MESSAGES.length)]
-  )
+  const [loveQuote, setLoveQuote] = useState('')
+
+  useEffect(() => {
+    setLoveQuote(LOVE_MESSAGES[Math.floor(Math.random() * LOVE_MESSAGES.length)])
+  }, [])
   const inputRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
@@ -601,20 +603,28 @@ function ChatPage({ user, onLogout }: { user: User; onLogout: () => void }) {
 }
 
 // ============ Main App ============
-export default function LoveChatApp() {
-  const [user, setUser] = useState<User>(() => {
-    if (typeof window !== 'undefined') {
-      const savedUser = localStorage.getItem('love-chat-user') as User
-      if (savedUser === 'eayashen' || savedUser === 'nusaiba') {
-        return savedUser
-      }
-    }
-    return null
-  })
+const noop = () => () => {}
 
-  if (!user) {
+function getStoredUser(): User {
+  const saved = localStorage.getItem('love-chat-user')
+  if (saved === 'eayashen' || saved === 'nusaiba') return saved
+  return null
+}
+
+const getServerSnapshot = () => null as User
+
+export default function LoveChatApp() {
+  const [user, setUser] = useState<User>(null)
+
+  // Read from localStorage without hydration mismatch
+  const storedUser = useSyncExternalStore(noop, getStoredUser, getServerSnapshot)
+
+  // Sync localStorage value to state only when different
+  const currentUser = user ?? storedUser
+
+  if (!currentUser) {
     return <LoginPage onLogin={setUser} />
   }
 
-  return <ChatPage user={user} onLogout={() => setUser(null)} />
+  return <ChatPage user={currentUser} onLogout={() => setUser(null)} />
 }
