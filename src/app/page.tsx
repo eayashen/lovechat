@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef, useCallback } from 'react'
 import { io, Socket } from 'socket.io-client'
-import { Heart, Send, LogOut, ArrowDown } from 'lucide-react'
+import { Send, LogOut, ArrowDown, Loader2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
@@ -24,8 +24,8 @@ const PARTNER_NAMES: Record<string, string> = {
 }
 
 const DISPLAY_NAMES: Record<string, string> = {
-  eayashen: 'Eayashen ❤️',
-  nusaiba: 'Nusaiba 💕',
+  eayashen: 'Eayashen',
+  nusaiba: 'Nusaiba',
 }
 
 const LOVE_MESSAGES = [
@@ -75,10 +75,10 @@ function LoginPage({ onLogin }: { onLogin: (user: User) => void }) {
         localStorage.setItem('love-chat-user', data.user)
         onLogin(data.user)
       } else {
-        setError(data.error || 'Wrong password 💔')
+        setError(data.error || 'Wrong password')
       }
     } catch {
-      setError('Something went wrong 💔')
+      setError('Something went wrong')
     } finally {
       setIsLoading(false)
     }
@@ -93,28 +93,19 @@ function LoginPage({ onLogin }: { onLogin: (user: User) => void }) {
             <span className="text-3xl font-bold text-love-500 heartbeat font-[family-name:var(--font-cursive)]">Hi</span>
           </div>
           <h1 className="text-3xl font-bold text-love-800 dark:text-love-200 font-[family-name:var(--font-cursive)]">
-            Our Love Chat
+            Our Chat
           </h1>
-          <p className="text-love-400 dark:text-love-300 mt-2 text-sm">
-            A special place just for us 💕
-          </p>
         </div>
 
         {/* Login Card */}
         <div className="bg-white/80 dark:bg-love-950/40 backdrop-blur-xl rounded-2xl p-6 shadow-lg shadow-love-200/30 dark:shadow-love-950/30 border border-love-200/50 dark:border-love-800/30 fade-in-up-delay-1">
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-2">
-              <label
-                htmlFor="password"
-                className="text-sm font-medium text-love-700 dark:text-love-300"
-              >
-                Enter your secret password
-              </label>
               <Input
                 ref={inputRef}
                 id="password"
                 type="password"
-                placeholder="Your love password..."
+                placeholder="Your secret password..."
                 value={password}
                 onChange={(e) => {
                   setPassword(e.target.value)
@@ -137,15 +128,12 @@ function LoginPage({ onLogin }: { onLogin: (user: User) => void }) {
               className="w-full h-12 bg-love-500 hover:bg-love-600 text-white btn-shine rounded-xl text-base font-medium transition-all duration-300 hover:shadow-lg hover:shadow-love-300/40 dark:hover:shadow-love-900/40 active:scale-[0.98]"
             >
               {isLoading ? (
-                <span className="flex items-center gap-2">
-                  <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                  Opening our space...
+                <span className="flex items-center justify-center gap-2">
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                  Decrypting...
                 </span>
               ) : (
-                <span className="flex items-center gap-2">
-                  <Heart className="w-4 h-4 fill-current" />
-                  Enter Our Space
-                </span>
+                <span className="font-[family-name:var(--font-cursive)]">Decrypt &gt;&gt;&gt;</span>
               )}
             </Button>
           </form>
@@ -406,7 +394,7 @@ function ChatPage({ user, onLogout }: { user: User; onLogout: () => void }) {
                 {isPartnerTyping
                   ? 'typing...'
                   : isPartnerOnline
-                    ? 'Online 💚'
+                    ? 'Online'
                     : 'Offline'}
               </p>
             </div>
@@ -437,19 +425,19 @@ function ChatPage({ user, onLogout }: { user: User; onLogout: () => void }) {
         {isLoadingHistory ? (
           <div className="flex items-center justify-center h-full">
             <div className="flex flex-col items-center gap-3">
-              <Heart className="w-8 h-8 text-love-300 animate-pulse fill-love-300" />
-              <p className="text-love-400 text-sm">Loading our memories...</p>
+              <Loader2 className="w-8 h-8 text-love-300 animate-spin" />
+              <p className="text-love-400 text-sm">Loading...</p>
             </div>
           </div>
         ) : messages.length === 0 ? (
           <div className="flex items-center justify-center h-full">
             <div className="text-center space-y-3">
               <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-love-100 dark:bg-love-900/30">
-                <Heart className="w-8 h-8 text-love-400 fill-love-400 heartbeat" />
+                <Send className="w-7 h-7 text-love-400" />
               </div>
               <div>
                 <p className="text-love-500 dark:text-love-400 font-medium">
-                  Say hi to {partnerName}! 💕
+                  Say hi to {partnerName}!
                 </p>
                 <p className="text-love-300 dark:text-love-600 text-sm mt-1">
                   Start your conversation here
