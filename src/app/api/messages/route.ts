@@ -1,13 +1,20 @@
 import { NextResponse } from 'next/server'
-import { db } from '@/lib/db'
+import { getMongoDB, MessageModel } from '@/lib/mongodb'
 
 export async function GET() {
   try {
-    const messages = await db.message.findMany({
-      orderBy: { createdAt: 'asc' },
-    })
+    await getMongoDB()
+    const messages = await MessageModel.find().sort({ createdAt: 1 }).lean()
 
-    return NextResponse.json({ messages })
+    // Convert _id and format for frontend
+    const formatted = messages.map((msg) => ({
+      id: String(msg._id),
+      sender: msg.sender,
+      content: msg.content,
+      createdAt: msg.createdAt.toISOString(),
+    }))
+
+    return NextResponse.json({ messages: formatted })
   } catch (error) {
     console.error('Failed to fetch messages:', error)
     return NextResponse.json(
@@ -28,11 +35,17 @@ export async function POST(request: Request) {
       )
     }
 
-    const message = await db.message.create({
-      data: { sender, content },
-    })
+    await getMongoDB()
+    const message = await MessageModel.create({ sender, content })
 
-    return NextResponse.json({ message }, { status: 201 })
+    const formatted = {
+      id: String(message._id),
+      sender: message.sender,
+      content: message.content,
+      createdAt: message.createdAt.toISOString(),
+    }
+
+    return NextResponse.json({ message: formatted }, { status: 201 })
   } catch (error) {
     console.error('Failed to save message:', error)
     return NextResponse.json(
