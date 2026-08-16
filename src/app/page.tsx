@@ -90,9 +90,9 @@ function LoginPage({ onLogin }: { onLogin: (user: User) => void }) {
         {/* Logo / Title */}
         <div className="text-center mb-8 fade-in-up">
           <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-love-100 dark:bg-love-900/30 mb-4">
-            <span className="text-3xl font-bold text-love-500 heartbeat">Hi</span>
+            <span className="text-3xl font-bold text-love-500 heartbeat font-[family-name:var(--font-cursive)]">Hi</span>
           </div>
-          <h1 className="text-3xl font-bold text-love-800 dark:text-love-200">
+          <h1 className="text-3xl font-bold text-love-800 dark:text-love-200 font-[family-name:var(--font-cursive)]">
             Our Love Chat
           </h1>
           <p className="text-love-400 dark:text-love-300 mt-2 text-sm">
