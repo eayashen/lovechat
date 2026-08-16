@@ -36,7 +36,6 @@ const LOVE_MESSAGES = [
   'Love you to the moon and back 🌙',
   'You are my everything 🥰',
   'Together is my favorite place 💖',
-  'You complete me 💗',
   'My heart beats for you 💓',
 ]
 
