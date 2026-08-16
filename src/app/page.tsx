@@ -31,7 +31,6 @@ const DISPLAY_NAMES: Record<string, string> = {
 const LOVE_MESSAGES = [
   'Every moment with you is a treasure 💎',
   'You make my heart skip a beat 💓',
-  'Forever and always, my love 🌹',
   'You are my sunshine ☀️',
   'My heart is yours 💕',
   'Love you to the moon and back 🌙',
