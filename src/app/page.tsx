@@ -29,14 +29,14 @@ const DISPLAY_NAMES: Record<string, string> = {
 }
 
 const LOVE_MESSAGES = [
-  'Every moment with you is a treasure 💎',
-  'You make my heart skip a beat 💓',
-  'You are my sunshine ☀️',
-  'My heart is yours 💕',
-  'Love you to the moon and back 🌙',
-  'You are my everything 🥰',
+  'Every moment with you is a treasure ',
+  'You make my heart skip a beat ',
+  'You are my sunshine ',
+  'My heart is yours ',
+  'Love you to the moon and back ',
+  'You are my everything ',
   'Thank you for visiting this web chat',
-  'My heart beats for you 💓',
+  'My heart beats for you ',
 ]
 
 // ============ Login Page ============
